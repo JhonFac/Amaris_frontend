@@ -27,9 +27,9 @@ jobs:
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          cd /home/front/Amaris_front
-          git config --global --add safe.directory /home/front/Amaris_front
-          sudo chown -R $USER:$USER /home/front/Amaris_front
+          cd /home/front/Amaris_frontend
+          git config --global --add safe.directory /home/front/Amaris_frontend
+          sudo chown -R $USER:$USER /home/front/Amaris_frontend
           sudo chmod +x deploy.sh
           bash deploy.sh
           
