@@ -7,6 +7,7 @@ import CreateClient from './components/CreateClient'
 import ClientDetail from './components/ClientDetail'
 import Operations from './components/Operations'
 import ApiTest from './components/ApiTest'
+import NotificationContainer from './components/NotificationContainer'
 import './App.css'
 
 // Componente para el Navbar con navegación activa
@@ -74,6 +75,9 @@ function App() {
             <Route path="/api-test" element={<ApiTest />} />
           </Routes>
         </main>
+
+        {/* Contenedor de Notificaciones */}
+        <NotificationContainer />
       </div>
     </Router>
   )

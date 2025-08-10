@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getApiEndpoint } from '../config/api'
+import { showSuccess, showError, showWarning, showInfo } from '../utils/notifications'
 
 function Dashboard() {
   const [stats, setStats] = useState({
@@ -64,6 +65,13 @@ function Dashboard() {
     }
   }
 
+  const testNotifications = () => {
+    showSuccess('¡Operación completada exitosamente!')
+    setTimeout(() => showError('Error en la conexión con el servidor'), 1000)
+    setTimeout(() => showWarning('El sistema está funcionando con rendimiento reducido'), 2000)
+    setTimeout(() => showInfo('Nueva actualización disponible'), 3000)
+  }
+
   const getHealthStatusColor = (status) => {
     switch (status) {
       case 'healthy': return '#27ae60'
@@ -94,14 +102,23 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h2>Panel de Control</h2>
-        <div className="system-status">
-          <span 
-            className="status-indicator" 
-            style={{ backgroundColor: getHealthStatusColor(stats.systemHealth) }}
-          ></span>
-          <span className="status-text">{getHealthStatusText(stats.systemHealth)}</span>
+        <div className="header-content">
+          <h2>Panel de Control</h2>
+          <div className="system-status">
+            <span 
+              className="status-indicator" 
+              style={{ backgroundColor: getHealthStatusColor(stats.systemHealth) }}
+            ></span>
+            <span className="status-text">{getHealthStatusText(stats.systemHealth)}</span>
+          </div>
         </div>
+        <button 
+          onClick={testNotifications} 
+          className="test-notifications-btn"
+          title="Probar sistema de notificaciones"
+        >
+          🔔 Probar Notificaciones
+        </button>
       </div>
       
       <div className="stats-grid">

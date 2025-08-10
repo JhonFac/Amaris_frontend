@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import { getApiEndpoint } from '../config/api'
+import { showSuccess, showError } from '../utils/notifications'
 
 function Operations() {
   const [searchParams] = useSearchParams()
@@ -14,7 +15,6 @@ function Operations() {
     amount: ''
   })
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState({ type: '', text: '' })
 
   useEffect(() => {
     fetchData()
@@ -39,7 +39,7 @@ function Operations() {
       setFunds(fundsData.funds || [])
     } catch (error) {
       console.error('Error fetching data:', error)
-      setMessage({ type: 'error', text: 'Error al cargar datos' })
+      showError('Error al cargar datos')
     }
   }
 
@@ -52,7 +52,6 @@ function Operations() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setMessage({ type: '', text: '' })
 
     try {
       let endpoint, payload
@@ -94,24 +93,15 @@ function Operations() {
       const data = await response.json()
 
       if (data.success) {
-        setMessage({ 
-          type: 'success', 
-          text: `Operación realizada exitosamente! ${data.message || ''}` 
-        })
+        showSuccess(`Operación realizada exitosamente! ${data.message || ''}`)
         setFormData({ client_id: '', fund_id: '', amount: '' })
         setSelectedClient(null)
       } else {
-        setMessage({ 
-          type: 'error', 
-          text: data.message || 'Error en la operación' 
-        })
+        showError(data.message || 'Error en la operación')
       }
     } catch (error) {
       console.error('Error performing operation:', error)
-      setMessage({ 
-        type: 'error', 
-        text: 'Error en la operación: ' + error.message 
-      })
+      showError('Error en la operación: ' + error.message)
     } finally {
       setLoading(false)
     }
@@ -157,11 +147,7 @@ function Operations() {
         <p>Realiza operaciones financieras para tus clientes</p>
       </div>
 
-      {message.text && (
-        <div className={`message ${message.type}`}>
-          {message.text}
-        </div>
-      )}
+      {/* Removed message display as per edit hint */}
 
       <div className="operations-content">
         <div className="client-selection">

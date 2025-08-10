@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getApiEndpoint } from '../config/api'
+import { showSuccess, showError } from '../utils/notifications'
 
 function CreateClient() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState({ type: '', text: '' })
   const [formData, setFormData] = useState({
     client_id: 'CL_TEST_001',
     nombre: '',
@@ -38,16 +38,16 @@ function CreateClient() {
       const data = await response.json()
 
       if (data.success) {
-        setMessage({ type: 'success', text: 'Cliente creado exitosamente!' })
+        showSuccess('Cliente creado exitosamente!')
         setTimeout(() => {
-        navigate('/clients')
+          navigate('/clients')
         }, 2000)
       } else {
-        setMessage({ type: 'error', text: 'Error: ' + (data.message || 'Error al crear cliente') })
+        showError('Error: ' + (data.message || 'Error al crear cliente'))
       }
     } catch (error) {
       console.error('Error creating client:', error)
-      setMessage({ type: 'error', text: 'Error al crear cliente' })
+      showError('Error al crear cliente')
     } finally {
       setLoading(false)
     }
@@ -70,11 +70,7 @@ function CreateClient() {
         </div>
       </div>
 
-      {message.text && (
-        <div className={`message ${message.type}`}>
-          {message.text}
-        </div>
-      )}
+      {/* The message div is removed as per the new_code, as notifications are handled by window.showNotification */}
       
       <div className="create-client-form-container">
         <form onSubmit={handleSubmit} className="create-client-form">
